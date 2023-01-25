@@ -1,22 +1,27 @@
 const fs = require('fs');
 
+
 const filename = './models/data.json';
 const data = JSON.parse(fs.readFileSync(filename));
 
 async function persist() {
     return new Promise((res, rej) => {
-        fs.writeFile(filename, JSON.stringify(data), (err) =>{
-            if(err == null){
+        fs.writeFile(filename, JSON.stringify(data, null, 2), (err) => {
+            if (err == null) {
                 res();
-            } else{
+            } else {
                 rej(err);
             }
         });
     });
 }
 
-function getAll() {
-    return data;
+function getAll(search, city, fromPrice, toPrice) {
+    search = search.toLowerCase();
+    return data
+    .filter(r => r.name.toLowerCase().includes(search) || r.description.toLowerCase().includes(search))
+    .filter(r => r.city.toLowerCase().includes(city.toLowerCase()))
+    .filter(r => r.price >= fromPrice && r.price <= toPrice);
 }
 
 function getById(id) {
@@ -32,8 +37,12 @@ async function create(roomData) {
         price: Number(roomData.price),
         imageUrl: roomData.imageUrl,
         description: roomData.description
-
     };
+
+    const missing = Object.entries(room).filter(([k, v]) => !v);
+    if (missing.length > 0) {
+        throw new Error(missing.map(m => `${m[0]} is required!`).join('\n'));
+    }
     data.push(room);
     await persist();
     return room;

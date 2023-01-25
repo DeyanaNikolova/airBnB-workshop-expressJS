@@ -2,11 +2,20 @@ const router = require('express').Router();
 const { getAll, getById } = require('../services/accomodationService');
 
 router.get('/', (req, res) => {
-    const rooms = getAll();
+    const search = req.query.search || '';
+    const city = req.query.city || '';
+    const fromPrice = Number(req.query.fromPrice) || 1;
+    const toPrice = Number(req.query.toPrice) || 1000;
+
+    const rooms = getAll(search, city, fromPrice, toPrice);
 
     res.render('catalog', {
         title: 'All Accomodation',
-        rooms
+        rooms,
+        search,
+        city,
+        fromPrice,
+        toPrice
     });
 });
 
@@ -19,7 +28,7 @@ router.get('/:id', (req, res) => {
             title: 'Accomodation Details',
             room
         });
-    } else{
+    } else {
         res.render('roomNotFound', {
             title: 'Accomodation Details',
             roomId
