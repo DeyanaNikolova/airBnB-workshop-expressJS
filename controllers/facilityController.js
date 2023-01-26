@@ -1,4 +1,4 @@
-const { createFacility, getAllFacilities } = require('../services/facilityService');
+const { createFacility, getAllFacilities, addFacilities } = require('../services/facilityService');
 const { getById } = require('../services/roomService');
 
 const facilityController = require('express').Router();
@@ -36,6 +36,7 @@ facilityController.get('/:roomId/decorateRoom', async (req, res) => {
 
 facilityController.post('/:roomId/decorateRoom', async (req, res) => {
     console.log(req.body);
+    await addFacilities(req.params.roomId, Object.keys(req.body));
     res.redirect('/facility/' + req.params.roomId + '/decorateRoom');
 });
 

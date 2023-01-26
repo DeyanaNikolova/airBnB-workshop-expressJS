@@ -1,4 +1,5 @@
 const Facility = require('../models/Facility');
+const Room = require('../models/Room');
 
 
 async function getAllFacilities() {
@@ -12,7 +13,27 @@ async function createFacility(label, iconUrl) {
     });
 }
 
+async function addFacilities(roomId, facilityIds) {
+    const room = await Room.findById(roomId);
+    const facilities = await Facility.find({ _id: { $in: facilityIds } });
+
+    const toRemove = room.facilities.filter(f => facilities.every(x => x._id != f._id));
+    console.log(toRemove);
+
+    const newlyAdded = facilities.filter(f => room.facilities.every(x => x._id != f._if));
+
+    console.log(newlyAdded);
+
+    newlyAdded.forEach(f => {
+        room.facilities.push(f);
+        f.rooms.push(room);
+    });
+    await room.save();
+    await Promise.all(newlyAdded.map(f => f.save()));
+}
+
 module.exports = {
     getAllFacilities,
-    createFacility
+    createFacility,
+    addFacilities
 };

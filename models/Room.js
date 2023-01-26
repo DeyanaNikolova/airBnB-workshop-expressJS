@@ -7,7 +7,7 @@ const roomSchema = new Schema({
     beds: { type: Number, required: true, min: 1 },
     price: { type: Number, required: true, min: 0.01 },
     imageUrl: { type: String },
-    fecilities: { type: [Types.ObjectId], default: [], ref: 'Facility' }
+    facilities: { type: [Types.ObjectId], default: [], ref: 'Facility' }
 });
 
 const Room = model('Room', roomSchema);
