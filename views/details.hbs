@@ -3,7 +3,7 @@
     <h1 class="item">{{name}}</h1>
     <div class="item padded">
 
-<main class="layout right large">
+        <main class="layout right large">
 
             <div class="col">
 
@@ -20,6 +20,10 @@
                     <div>
                         Price per night: <strong>{{price}}€</strong>
                     </div>
+
+                    <a class="action" href="/facility/{{_id}}/decorateRoom">Edit Facilities</a>
+
+                    <!--
                     <ul class="catalog">
                         {{#each facilities}}
                         <li>{{label}} <img class="facility-icon" src="{{iconUrl}}"></li>
@@ -31,12 +35,13 @@
                     <a class="action" href="/facility/{{_id}}/decorateRoom">Facilities</a>
                     <a class="action" href="/room/{{_id}}/delete">Delete</a>
                     {{/if}}
+                    -->
                 </div>
 
             </div>
         </main>
 
-    <footer Listed by (TODO add owner)></footer>
+        <footer Listed by (TODO add owner)></footer>
     </div>
 
     {{/with}}
